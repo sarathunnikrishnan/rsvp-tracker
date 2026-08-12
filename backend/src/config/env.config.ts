@@ -1,5 +1,10 @@
+import path from 'path';
 import dotenv from 'dotenv';
-dotenv.config();
+
+// Load .env from backend directory or root project directory
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 /**
  * Validates and exposes centralized application environment configuration.
@@ -16,5 +21,8 @@ export const envConfig = {
     user: process.env.DB_USER || 'dexqbit_user',
     password: process.env.DB_PASSWORD || 'dexqbit_password',
     name: process.env.DB_NAME || 'meetup_tracker',
+    ssl: process.env.DB_SSL === 'true',
+    sslModeKeyword: process.env.DB_SSL_MODE_KEYWORD || 'ssl-mode=',
+    cloudHostKeyword: process.env.DB_CLOUD_HOST_KEYWORD || 'aivencloud.com',
   },
 };
