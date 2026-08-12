@@ -1,8 +1,6 @@
 import express, { Express } from 'express';
 import cors from 'cors';
-import authRoutes from './routes/auth.routes';
-import eventRoutes from './routes/event.routes';
-import rsvpRoutes from './routes/rsvp.routes';
+import apiRouter from './routes';
 import { errorHandler } from './middleware/error.middleware';
 
 /**
@@ -15,15 +13,8 @@ export function createApp(): Express {
   app.use(cors());
   app.use(express.json());
 
-  // Healthcheck Endpoint
-  app.get('/api/health', (_req, res) => {
-    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
-  });
-
-  // API Routes
-  app.use('/api/auth', authRoutes);
-  app.use('/api/events', eventRoutes);
-  app.use('/api/rsvps', rsvpRoutes);
+  // Mount API Router (includes health check & all sub-routes)
+  app.use('/api', apiRouter);
 
   // Global Error Middleware
   app.use(errorHandler);

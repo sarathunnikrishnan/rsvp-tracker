@@ -4,14 +4,22 @@ import { envConfig } from './env.config';
 /**
  * Creates and exports a MySQL connection pool for efficient query execution.
  */
-export const dbPool = mysql.createPool({
-  host: envConfig.db.host,
-  port: envConfig.db.port,
-  user: envConfig.db.user,
-  password: envConfig.db.password,
-  database: envConfig.db.name,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  multipleStatements: true,
-});
+export const dbPool = envConfig.db.url
+  ? mysql.createPool({
+      uri: envConfig.db.url,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      multipleStatements: true,
+    })
+  : mysql.createPool({
+      host: envConfig.db.host,
+      port: envConfig.db.port,
+      user: envConfig.db.user,
+      password: envConfig.db.password,
+      database: envConfig.db.name,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      multipleStatements: true,
+    });
